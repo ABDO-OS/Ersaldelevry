@@ -40,7 +40,7 @@ class FindRestaurantsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.location_on, size: 24, color: primaryColor),
+                    const Icon(Icons.location_on, size: 24, color: primaryColor),
                     const SizedBox(width: 8),
                     Text(
                       "Use current location",
@@ -63,8 +63,8 @@ class FindRestaurantsScreen extends StatelessWidget {
                         context,
                       ).textTheme.bodyMedium!.copyWith(color: titleColor),
                       cursorColor: primaryColor,
-                      decoration: InputDecoration(
-                        prefixIcon: const Padding(
+                      decoration: const InputDecoration(
+                        prefixIcon: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Icon(Icons.location_on, color: bodyTextColor),
                         ),

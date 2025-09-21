@@ -62,7 +62,6 @@ class RestaurantInfoMediumCard extends StatelessWidget {
             ),
             const SizedBox(height: defaultPadding / 2),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Rating(rating: rating),

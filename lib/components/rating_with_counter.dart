@@ -24,7 +24,7 @@ class RatingWithCounter extends StatelessWidget {
               .copyWith(color: titleColor.withOpacity(0.74)),
         ),
         const SizedBox(width: 8),
-        Icon(
+        const Icon(
           Icons.star,
           size: 20,
           color: primaryColor,

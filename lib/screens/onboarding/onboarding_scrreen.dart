@@ -43,7 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ],
               ),
             ),
-            const Spacer(flex: 1),
+            const Spacer(),
             Expanded(
               flex: 14,
               child: PageView.builder(

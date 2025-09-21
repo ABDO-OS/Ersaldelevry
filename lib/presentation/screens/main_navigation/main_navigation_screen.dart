@@ -20,25 +20,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
 
   final List<NavigationItem> _navigationItems = [
-    NavigationItem(
+    const NavigationItem(
       icon: Icons.home_outlined,
       activeIcon: Icons.home,
       label: AppStrings.home,
       route: AppRouter.home,
     ),
-    NavigationItem(
+    const NavigationItem(
       icon: Icons.search_outlined,
       activeIcon: Icons.search,
       label: AppStrings.search,
       route: AppRouter.search,
     ),
-    NavigationItem(
+    const NavigationItem(
       icon: Icons.shopping_bag_outlined,
       activeIcon: Icons.shopping_bag,
       label: AppStrings.orders,
       route: AppRouter.orders,
     ),
-    NavigationItem(
+    const NavigationItem(
       icon: Icons.person_outline,
       activeIcon: Icons.person,
       label: AppStrings.profile,

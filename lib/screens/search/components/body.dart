@@ -104,10 +104,10 @@ class _BodyState extends State<Body> {
         validator: requiredValidator.call,
         style: Theme.of(context).textTheme.labelLarge,
         textInputAction: TextInputAction.search,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: "Search on HiwKai",
           contentPadding: kTextFieldPadding,
-          prefixIcon: const Padding(
+          prefixIcon: Padding(
             padding: EdgeInsets.all(8.0),
             child: Icon(Icons.search, color: bodyTextColor),
           ),

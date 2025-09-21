@@ -86,8 +86,8 @@ class _ProductDeliveryScreenState extends State<ProductDeliveryScreen> {
     if (_formKey.currentState!.validate()) {
       // TODO: Implement delivery submission logic
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('تم إرسال طلب التوصيل بنجاح'),
+        const SnackBar(
+          content: Text('تم إرسال طلب التوصيل بنجاح'),
           backgroundColor: AppTheme.successGreen,
         ),
       );
@@ -105,7 +105,7 @@ class _ProductDeliveryScreenState extends State<ProductDeliveryScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go(AppRouter.home),
         ),
       ),
       backgroundColor: AppTheme.grey50,
@@ -239,7 +239,7 @@ class _ProductDeliveryScreenState extends State<ProductDeliveryScreen> {
                   border: Border.all(color: AppTheme.grey300),
                 ),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedCategory,
+                  initialValue: _selectedCategory,
                   decoration: const InputDecoration(
                     labelText: 'فئة المنتج',
                     prefixIcon:
@@ -327,7 +327,7 @@ class _ProductDeliveryScreenState extends State<ProductDeliveryScreen> {
                   border: Border.all(color: AppTheme.grey300),
                 ),
                 child: DropdownButtonFormField<String>(
-                  value: _selectedPriority,
+                  initialValue: _selectedPriority,
                   decoration: const InputDecoration(
                     labelText: 'أولوية التوصيل',
                     prefixIcon:
@@ -444,7 +444,7 @@ class _ProductDeliveryScreenState extends State<ProductDeliveryScreen> {
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.info_outline,
             color: AppTheme.primaryGreen,
             size: 20,

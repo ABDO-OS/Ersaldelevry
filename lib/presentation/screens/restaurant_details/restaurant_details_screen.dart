@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/routing/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 
 class RestaurantDetailsScreen extends StatelessWidget {
@@ -16,6 +18,10 @@ class RestaurantDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('تفاصيل المطعم'),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go(AppRouter.home),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -60,21 +66,21 @@ class RestaurantDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   // Rating and delivery time
-                  Row(
+                  const Row(
                     children: [
                       Icon(
                         Icons.star,
                         color: AppTheme.warningOrange,
                       ),
-                      const SizedBox(width: 4),
-                      const Text('4.5'),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 4),
+                      Text('4.5'),
+                      SizedBox(width: 16),
                       Icon(
                         Icons.access_time,
                         color: AppTheme.grey600,
                       ),
-                      const SizedBox(width: 4),
-                      const Text('20 دقيقة'),
+                      SizedBox(width: 4),
+                      Text('20 دقيقة'),
                     ],
                   ),
 

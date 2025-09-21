@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodly_ui/constants.dart';
 import 'package:foodly_ui/screens/auth/sign_in_screen.dart';
@@ -42,7 +41,7 @@ class Body extends StatelessWidget {
                 title: "تسجيل الخروج",
                 subTitle: "انقر هنا عندما تريد تسجيل الخروج",
                 press: () async {
-                  await FirebaseAuth.instance.signOut();
+                  // TODO: Implement sign out logic
 
                   if (!context.mounted) return;
                   Route route = MaterialPageRoute(

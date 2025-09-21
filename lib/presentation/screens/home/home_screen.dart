@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../cubits/auth/auth_cubit.dart';
+import '../../../core/di/injection_container.dart' as di;
+import '../../../data/datasources/location_remote_datasource.dart';
+import '../../../data/models/location_model.dart';
 import '../../widgets/restaurant_card.dart';
 import '../../widgets/section_header.dart';
 
@@ -18,22 +19,75 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _currentLocation = 'جاري تحديد الموقع...';
+  bool _isLoadingLocation = true;
+  LocationModel? _currentLocationData;
+  late final LocationRemoteDataSource _locationService;
 
   @override
   void initState() {
     super.initState();
+    _locationService = di.sl<LocationRemoteDataSource>();
     _getCurrentLocation();
   }
 
-  void _getCurrentLocation() {
-    // TODO: Implement location service
-    Future.delayed(const Duration(seconds: 2), () {
+  Future<void> _getCurrentLocation() async {
+    try {
+      setState(() {
+        _isLoadingLocation = true;
+        _currentLocation = 'جاري تحديد الموقع...';
+      });
+
+      final locationData = await _locationService.getCurrentLocation();
+
       if (mounted) {
         setState(() {
-          _currentLocation = 'الرياض، المملكة العربية السعودية';
+          _currentLocationData = locationData;
+          _currentLocation = _formatLocationAddress(locationData);
+          _isLoadingLocation = false;
         });
       }
-    });
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _currentLocation = 'فشل في تحديد الموقع';
+          _isLoadingLocation = false;
+        });
+
+        // Show error message with retry option
+        _showLocationError(e.toString());
+      }
+    }
+  }
+
+  String _formatLocationAddress(LocationModel location) {
+    if (location.address != null && location.address!.isNotEmpty) {
+      return location.address!;
+    }
+
+    final parts = <String>[];
+    if (location.city != null && location.city!.isNotEmpty) {
+      parts.add(location.city!);
+    }
+    if (location.country != null && location.country!.isNotEmpty) {
+      parts.add(location.country!);
+    }
+
+    return parts.isNotEmpty ? parts.join(', ') : 'موقع غير معروف';
+  }
+
+  void _showLocationError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('خطأ في تحديد الموقع: $error'),
+        backgroundColor: AppTheme.errorRed,
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'إعادة المحاولة',
+          textColor: AppTheme.white,
+          onPressed: _getCurrentLocation,
+        ),
+      ),
+    );
   }
 
   Widget _buildDeliverySection() {
@@ -42,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const EdgeInsets.symmetric(horizontal: AppConstants.defaultPadding),
       padding: const EdgeInsets.all(AppTheme.spacingL),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
             AppTheme.primaryGreen,
             AppTheme.lightGreen,
@@ -196,42 +250,75 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            return CircleAvatar(
-              backgroundImage: state.user?.photoUrl != null
-                  ? NetworkImage(state.user!.photoUrl!)
-                  : null,
-              child: state.user?.photoUrl == null
-                  ? const Icon(Icons.person)
-                  : null,
-            );
-          },
+        leading: const CircleAvatar(
+          child: Icon(Icons.person),
         ),
         title: Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppStrings.deliveryTo,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppTheme.primaryGreen,
-                        fontWeight: FontWeight.w500,
+            Expanded(
+              child: GestureDetector(
+                onTap: _getCurrentLocation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          AppStrings.deliveryTo,
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppTheme.primaryGreen,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                        if (_isLoadingLocation) ...[
+                          const SizedBox(width: 8),
+                          const SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppTheme.primaryGreen,
+                              ),
+                            ),
+                          ),
+                        ] else ...[
+                          const SizedBox(width: 8),
+                          const Icon(
+                            Icons.refresh,
+                            size: 16,
+                            color: AppTheme.primaryGreen,
+                          ),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _currentLocation,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textPrimary,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (_currentLocationData != null &&
+                        !_isLoadingLocation) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        'دقة: ${_currentLocationData!.latitude.toStringAsFixed(4)}, ${_currentLocationData!.longitude.toStringAsFixed(4)}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppTheme.grey600,
+                              fontSize: 10,
+                            ),
                       ),
+                    ],
+                  ],
                 ),
-                Text(
-                  _currentLocation,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textPrimary,
-                      ),
-                ),
-              ],
+              ),
             ),
-            SizedBox(
-              width: 41,
-            ),
+            const SizedBox(width: 16),
             SizedBox(
               width: 70,
               height: 70,
@@ -254,13 +341,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   boxShadow: AppTheme.cardShadow,
                 ),
                 child: TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'ابحث عن المطاعم أو الأطباق',
                     hintStyle: TextStyle(color: AppTheme.textHint),
                     prefixIcon:
                         Icon(Icons.search, color: AppTheme.primaryGreen),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding: EdgeInsets.symmetric(
                       horizontal: AppTheme.spacingM,
                       vertical: AppTheme.spacingM,
                     ),
@@ -372,6 +459,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _getCurrentLocation,
+        backgroundColor: AppTheme.primaryGreen,
+        child: _isLoadingLocation
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppTheme.white),
+                ),
+              )
+            : const Icon(Icons.my_location, color: AppTheme.white),
       ),
     );
   }

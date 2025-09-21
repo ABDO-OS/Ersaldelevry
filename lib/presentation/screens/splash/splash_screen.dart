@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../cubits/auth/auth_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -47,8 +45,8 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(seconds: 2));
 
     if (mounted) {
-      // Check authentication status
-      context.read<AuthCubit>().getCurrentUser();
+      // Navigate to user type selection
+      context.go(AppRouter.userTypeSelection);
     }
   }
 
@@ -60,23 +58,22 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Navigate to user type selection after splash
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        context.go(AppRouter.userTypeSelection);
+      }
+    });
+
     return Scaffold(
-      backgroundColor: AppTheme.primaryGreen,
-      body: BlocListener<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state.isAuthenticated) {
-            context.go(AppRouter.home);
-          } else if (state.status == AuthStatus.unauthenticated) {
-            context.go(AppRouter.userTypeSelection);
-          }
-        },
-        child: Center(
+        backgroundColor: AppTheme.primaryGreen,
+        body: Center(
           child: FadeTransition(
             opacity: _fadeAnimation,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.restaurant,
                   size: 100,
                   color: AppTheme.white,
@@ -103,8 +100,6 @@ class _SplashScreenState extends State<SplashScreen>
               ],
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -36,7 +36,7 @@ const InputDecoration otpInputDecoration = InputDecoration(
   errorStyle: TextStyle(height: 0),
 );
 
-const kErrorBorderSide = BorderSide(color: Colors.red, width: 1);
+const kErrorBorderSide = BorderSide(color: Colors.red);
 
 // Validator
 final passwordValidator = MultiValidator([

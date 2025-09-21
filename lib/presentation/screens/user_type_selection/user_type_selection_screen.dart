@@ -21,19 +21,19 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   int _selectedUserType = 0; // Default to العميل
 
   final List<UserType> _userTypes = [
-    UserType(
+    const UserType(
       title: AppStrings.admin,
       subtitle: 'إدارة النظام والمطاعم',
       icon: Icons.admin_panel_settings,
       color: AppTheme.primaryGreen,
     ),
-    UserType(
+    const UserType(
       title: AppStrings.delivery,
       subtitle: 'توصيل الطلبات',
       icon: Icons.delivery_dining,
       color: AppTheme.warningOrange,
     ),
-    UserType(
+    const UserType(
       title: AppStrings.customer,
       subtitle: 'طلب الطعام',
       icon: Icons.person,

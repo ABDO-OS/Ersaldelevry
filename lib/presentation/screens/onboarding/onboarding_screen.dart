@@ -17,18 +17,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
 
   final List<OnboardingData> _onboardingData = [
-    OnboardingData(
+    const OnboardingData(
       title: 'جميع المفضلات لديك',
       description: 'اطلب من أفضل المطاعم المحلية\nمع التوصيل السهل والسريع.',
       icon: Icons.restaurant,
     ),
-    OnboardingData(
+    const OnboardingData(
       title: 'عروض التوصيل المجاني',
       description:
           'توصيل مجاني للعملاء الجدد عبر Apple Pay\nوطرق الدفع الأخرى.',
       icon: Icons.local_offer,
     ),
-    OnboardingData(
+    const OnboardingData(
       title: 'اختر طعامك',
       description:
           'ابحث بسهولة عن نوع الطعام الذي تشتهيه\nوستحصل على التوصيل في نطاق واسع.',
@@ -97,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Container(
                           width: 200,
                           height: 200,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppTheme.lightestGreen,
                             shape: BoxShape.circle,
                           ),

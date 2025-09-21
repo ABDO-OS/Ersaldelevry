@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_theme.dart';
 
 class RestaurantCard extends StatelessWidget {
@@ -45,9 +44,9 @@ class RestaurantCard extends StatelessWidget {
             // Image placeholder
             Container(
               height: 120,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppTheme.grey200,
-                borderRadius: const BorderRadius.vertical(
+                borderRadius: BorderRadius.vertical(
                   top: Radius.circular(AppTheme.radiusL),
                 ),
               ),
@@ -86,7 +85,7 @@ class RestaurantCard extends StatelessWidget {
                   // const SizedBox(height: 5),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         size: 16,
                         color: AppTheme.warningOrange,
@@ -111,7 +110,7 @@ class RestaurantCard extends StatelessWidget {
                       //         color: AppTheme.grey600,
                       //       ),
                       // ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       )
                     ],

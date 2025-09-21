@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodly_ui/entry_point.dart';
+// import 'package:foodly_ui/entry_point.dart';
 
 import '../../../constants.dart';
 
@@ -44,31 +43,21 @@ class _SignUpFormState extends State<SignUpForm> {
       });
 
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const EntryPoint()),
-          );
-        }
-      } on FirebaseAuthException catch (e) {
-        String message = 'An error occurred';
-        if (e.code == 'weak-password') {
-          message = 'The password provided is too weak.';
-        } else if (e.code == 'email-already-in-use') {
-          message = 'The account already exists for that email.';
-        } else if (e.code == 'invalid-email') {
-          message = 'The email address is not valid.';
-        }
+        // TODO: Implement sign up logic
+        await Future.delayed(const Duration(seconds: 2)); // Simulate API call
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
+            const SnackBar(
+              content: Text('تم إنشاء الحساب بنجاح'),
+              backgroundColor: Colors.green,
+            ),
           );
+          // Navigate to home or next screen
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const EntryPoint()),
+          // );
         }
       } catch (e) {
         if (mounted) {

@@ -59,7 +59,6 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryGreen,
-        brightness: Brightness.light,
         primary: primaryGreen,
         secondary: lightGreen,
         tertiary: accentGreen,

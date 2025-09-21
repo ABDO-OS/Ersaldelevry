@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:foodly_ui/entry_point.dart';
@@ -34,30 +33,12 @@ class _SignInScreenState extends State<SignInScreen> {
       });
 
       try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+        // TODO: Implement sign in logic
 
         if (mounted) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const EntryPoint()),
-          );
-        }
-      } on FirebaseAuthException catch (e) {
-        String message = 'An error occurred';
-        if (e.code == 'user-not-found') {
-          message = 'No user found for that email.';
-        } else if (e.code == 'wrong-password') {
-          message = 'Wrong password provided.';
-        } else if (e.code == 'invalid-email') {
-          message = 'The email address is not valid.';
-        }
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
           );
         }
       } catch (e) {
