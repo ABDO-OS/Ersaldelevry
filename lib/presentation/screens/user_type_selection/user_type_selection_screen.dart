@@ -85,13 +85,15 @@ class _UserTypeSelectionScreenState extends State<UserTypeSelectionScreen>
   }
 
   void _proceedToAuth() {
-    // For development, العميل goes to onboarding
-    if (_selectedUserType == 2) {
-      // العميل
-      context.go(AppRouter.onboarding);
-    } else {
-      // الأدارة and المندوب go to login
+    if (_selectedUserType == 0) {
+      // الأدارة - go to login
       context.go(AppRouter.signIn);
+    } else if (_selectedUserType == 1) {
+      // المندوب - go to delivery screen
+      context.go(AppRouter.delivery);
+    } else {
+      // العميل - go to onboarding
+      context.go(AppRouter.onboarding);
     }
   }
 

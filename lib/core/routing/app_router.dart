@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/onboarding/onboarding_screen.dart';
 import '../../presentation/screens/auth/sign_in_screen.dart';
@@ -12,6 +13,8 @@ import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/main_navigation/main_navigation_screen.dart';
 import '../../presentation/screens/user_type_selection/user_type_selection_screen.dart';
 import '../../presentation/screens/delivery/product_delivery_screen.dart';
+import '../../presentation/screens/delivery/delivery_screen.dart';
+import '../../presentation/screens/delivery/cubit/delivery_cubit.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -25,6 +28,7 @@ class AppRouter {
   static const String profile = '/profile';
   static const String restaurantDetails = '/restaurant';
   static const String productDelivery = '/product-delivery';
+  static const String delivery = '/delivery';
 
   static final GoRouter router = GoRouter(
     initialLocation: splash,
@@ -92,6 +96,14 @@ class AppRouter {
         path: productDelivery,
         name: 'product-delivery',
         builder: (context, state) => const ProductDeliveryScreen(),
+      ),
+      GoRoute(
+        path: delivery,
+        name: 'delivery',
+        builder: (context, state) => BlocProvider(
+          create: (context) => DeliveryCubit(),
+          child: const DeliveryScreen(),
+        ),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
